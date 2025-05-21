@@ -3,6 +3,8 @@ import { Router, Request, Response } from "express";
 // import { CreateUsuarioController } from "./controllers/users/CreateUsuarioController";
 import { AuthUserController } from "./controllers/users/AuthUserController";
 
+import { CreateUsuarioController } from "./controllers/users/CreateUsuarioController";
+
 const router = Router();
 
 router.get("/", (req, res) => {
@@ -12,5 +14,6 @@ router.get("/", (req, res) => {
 // Rotas de usuários
 // router.post("/usuarios", new CreateUsuarioController().handle);
 router.post("/login", new AuthUserController().handle);
+router.post("/register", new CreateUsuarioController().handle);
 
 export { router };
