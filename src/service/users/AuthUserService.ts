@@ -4,7 +4,12 @@ import bcrypt from "bcryptjs";
 
 class AuthUserService {
   async execute({ email, password }: { email: string; password: string }) {
-    // Busca o usuário no banco de dados
+    // Verificação do JWT_SECRET
+    if (!process.env.JWT_SECRET) {
+      throw new Error("JWT_SECRET não está definido nas variáveis de ambiente");
+    }
+
+    // Busca o usuário
     const user = await prismaClient.user.findUnique({
       where: { email },
     });
@@ -13,28 +18,42 @@ class AuthUserService {
       throw new Error("Usuário não encontrado.");
     }
 
-    // Verifica a senha
+    // Verificação de senha
     const passwordMatch = await bcrypt.compare(password, user.password);
     if (!passwordMatch) {
       throw new Error("Senha incorreta!");
     }
 
-    // Gera o token com a role do usuário
+    // Preparação do payload
+    const payload = {
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      id: user.id
+    };
+
+    // Opções do token
+    const options = {
+      subject: user.id,
+      expiresIn: "7d"
+    };
+
+    // Geração do token (com tipagem segura)
     const token = sign(
-      {
-        name: user.name,
-        email: user.email,
-        role: user.role, 
-      },
-      process.env.JWT_SECRET as string,
-      {
-        subject: user.id,
-        expiresIn: "7d",
-      }
+      payload,
+      process.env.JWT_SECRET,
+      options
     );
 
-    // ✅ INCLUIR ROLE NO RETORNO DA AUTENTICAÇÃO
-    return { id: user.id, name: user.name, email: user.email, role: user.role, token };
+    return {
+      token,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role
+      }
+    };
   }
 }
 
