@@ -14,14 +14,50 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  name      String
-  email     String   @unique
-  password  String
-  role      String   @default("user")
-  roleId    Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id             String               @id @default(uuid())
+  name           String
+  email          String    @unique
+  password       String
+
+  // Hierarquia
+  role           String   @default("user") // ex: "admin", "user", "viewer"
+  roleLevel      Int
+  managerId      String?
+  manager        User?     @relation("UserToManager", fields: [managerId], references: [id])
+  subordinates   User[]    @relation("UserToManager")
+
+  // Dados Pessoais (TODOS OPCIONAIS)
+  cpf            String?   @unique
+  cep            String?
+  estado         String?
+  cidade         String?
+  rua            String?
+  numero         String?
+  bairro         String?
+  complemento    String?
+
+  // Dados da Empresa (caso tenha CNPJ)
+  cnpj                   String?   @unique
+  nomeFantasia           String?
+  razaoSocial            String?
+  registroMunicipal      String?
+  registroEstadual       String?
+  empresaCep             String?
+  empresaEstado          String?
+  empresaCidade          String?
+  empresaRua             String?
+  empresaNumero          String?
+  empresaBairro          String?
+  empresaComplemento     String?
+
+  // Campo obrigatório sempre
+  cargoNaEmpresa         String
+
+  // Caso não tenha CNPJ
+  nomeEmpresa            String?
+
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
 
   @@map("user")
 }
