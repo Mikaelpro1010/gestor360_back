@@ -5,6 +5,10 @@ import { AuthUserController } from "./controllers/users/AuthUserController";
 
 import { CreateUsuarioController } from "./controllers/users/CreateUsuarioController";
 
+import { DeleteUsuarioController } from "./controllers/users/DeleteUsuarioController";
+
+import { UpdateUsuarioController } from "./controllers/users/UpdateUsuarioController ";
+
 const router = Router();
 
 router.get("/", (req, res) => {
@@ -15,5 +19,7 @@ router.get("/", (req, res) => {
 // router.post("/usuarios", new CreateUsuarioController().handle);
 router.post("/login", new AuthUserController().handle);
 router.post("/register", new CreateUsuarioController().handle);
+router.delete("/:id", new DeleteUsuarioController().handle);
+router.put("/:id", new UpdateUsuarioController().handle);
 
 export { router };
