@@ -9,6 +9,8 @@ import { DeleteUsuarioController } from "../controllers/users/DeleteUsuarioContr
 
 import { UpdateUsuarioController } from "../controllers/users/UpdateUsuarioController ";
 
+import { GetUsuariosController } from "../controllers/users/GetUsuariosController";
+
 import { AprovedUserController } from "../controllers/users/AprovedUserController";
 
 import { isAdmin } from "../middlewares/isAdmin";
@@ -24,7 +26,7 @@ router.post("/login", new AuthUserController().handle);
 router.post("/register", new CreateUsuarioController().handle);
 router.delete("/users/:id", new DeleteUsuarioController().handle);
 router.put("/users/:id", new UpdateUsuarioController().handle);
+router.get("/users", new GetUsuariosController().handle);
 router.patch("/users/:id/approve", isAdmin, new AprovedUserController().handle);
-
 
 export default router;

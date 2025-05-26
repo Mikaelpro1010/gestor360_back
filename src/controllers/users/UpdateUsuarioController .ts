@@ -4,15 +4,13 @@ import { UpdateUsuarioService } from "../../service/users/UpdateUsuarioService";
 class UpdateUsuarioController {
   async handle(req: Request, res: Response) {
     const { id } = req.params;
-    const { name, email, role, roleLevel, cargoNaEmpresa } = req.body;
+    const { name, email, cargoNaEmpresa } = req.body;
 
     try {
       const updatedUser = await UpdateUsuarioService({
         id,
         name,
         email,
-        role,
-        roleLevel,
         cargoNaEmpresa,
       });
 
