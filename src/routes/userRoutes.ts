@@ -24,9 +24,9 @@ router.get("/", (req, res) => {
 // Rotas de usuários
 router.post("/login", new AuthUserController().handle);
 router.post("/register", new CreateUsuarioController().handle);
-router.delete("/users/:id", new DeleteUsuarioController().handle);
-router.put("/users/:id", new UpdateUsuarioController().handle);
-router.get("/users", new GetUsuariosController().handle);
+router.delete("/users/:id", isAdmin, new DeleteUsuarioController().handle);
+router.put("/users/:id", isAdmin, new UpdateUsuarioController().handle);
+router.get("/users", isAdmin, new GetUsuariosController().handle);
 router.patch("/users/:id/approve", isAdmin, new AprovedUserController().handle);
 
 export default router;
