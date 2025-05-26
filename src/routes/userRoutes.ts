@@ -9,6 +9,10 @@ import { DeleteUsuarioController } from "../controllers/users/DeleteUsuarioContr
 
 import { UpdateUsuarioController } from "../controllers/users/UpdateUsuarioController ";
 
+import { AprovedUserController } from "../controllers/users/AprovedUserController";
+
+import { isAdmin } from "../middlewares/isAdmin";
+
 const router = Router();
 
 router.get("/", (req, res) => {
@@ -20,5 +24,7 @@ router.post("/login", new AuthUserController().handle);
 router.post("/register", new CreateUsuarioController().handle);
 router.delete("/users/:id", new DeleteUsuarioController().handle);
 router.put("/users/:id", new UpdateUsuarioController().handle);
+router.patch("/users/:id/approve", isAdmin, new AprovedUserController().handle);
+
 
 export default router;
