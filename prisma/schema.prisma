@@ -21,9 +21,11 @@ model User {
   verificationCode   String?
   codeExpiresAt      DateTime?
 
+  status    String  @default("PENDENTE")
+
   // Hierarquia
   role           String   @default("user") // ex: "admin", "user", "viewer"
-  roleLevel      Int
+  roleLevel      Int      @default(6)
   managerId      String?
   manager        User?     @relation("UserToManager", fields: [managerId], references: [id])
   subordinates   User[]    @relation("UserToManager")
