@@ -6,8 +6,6 @@ export const userSchema = z.object({
   password: z.string().min(8),
 
   // Hierarquia
-  role: z.string(),
-  roleLevel: z.number().int().min(1),
   managerId: z.number().int().optional(),
 
   // Dados pessoais (opcionais)
@@ -39,4 +37,4 @@ export const userSchema = z.object({
 
   // Empresa sem CNPJ
   nomeEmpresa: z.string().optional()
-});
+}).strict();
