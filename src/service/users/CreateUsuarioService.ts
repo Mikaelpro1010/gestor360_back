@@ -7,9 +7,9 @@ interface UsuarioRequest {
   email: string;
   password: string;
 
-  role?: string;
-  roleLevel: number;
-  managerId?: number;
+  managerId?: string;
+
+  status: string;
 
   cpf?: string;
   cep?: string;
@@ -49,8 +49,6 @@ class CreateUsuarioService {
       name,
       email,
       password,
-      role = "user",
-      roleLevel,
       managerId,
 
       cpf,
@@ -94,9 +92,9 @@ class CreateUsuarioService {
         name,
         email,
         password: passwordHash,
-        role,
-        roleLevel,
         managerId,
+
+        status: status ?? "PENDENTE",
 
         cpf,
         cep,

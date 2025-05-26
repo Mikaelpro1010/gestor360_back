@@ -15,8 +15,6 @@ class CreateUsuarioController {
       name,
       email,
       password,
-      role,
-      roleLevel,
       managerId,
 
       cpf,
@@ -59,9 +57,8 @@ class CreateUsuarioController {
           name,
           email,
           password: hashedPassword,
-          role,
-          roleLevel,
           managerId,
+          status: "PENDENTE",
 
           cpf,
           cep,
