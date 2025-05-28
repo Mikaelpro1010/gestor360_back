@@ -6,35 +6,35 @@ export const userSchema = z.object({
   password: z.string().min(8),
 
   // Hierarquia
-  managerId: z.number().int().optional(),
+  managerId: z.number().int().optional().nullable(),
 
   // Dados pessoais (opcionais)
-  cpf: z.string().length(11).optional(),
-  cep: z.string().min(8).optional(),
-  estado: z.string().optional(),
-  cidade: z.string().optional(),
-  rua: z.string().optional(),
-  numero: z.string().optional(),
-  bairro: z.string().optional(),
-  complemento: z.string().optional(),
+  cpf: z.string().length(11).optional().nullable(),
+  cep: z.string().min(8).optional().nullable(),
+  estado: z.string().optional().nullable(),
+  cidade: z.string().optional().nullable(),
+  rua: z.string().optional().nullable(),
+  numero: z.string().optional().nullable(),
+  bairro: z.string().optional().nullable(),
+  complemento: z.string().optional().nullable(),
 
-  // Dados da empresa com CNPJ (opcionais, mas condicionalmente exigíveis)
-  cnpj: z.string().length(14).optional(),
-  nomeFantasia: z.string().optional(),
-  razaoSocial: z.string().optional(),
-  registroMunicipal: z.string().optional(),
-  registroEstadual: z.string().optional(),
-  empresaCep: z.string().optional(),
-  empresaEstado: z.string().optional(),
-  empresaCidade: z.string().optional(),
-  empresaRua: z.string().optional(),
-  empresaNumero: z.string().optional(),
-  empresaBairro: z.string().optional(),
-  empresaComplemento: z.string().optional(),
+  // Dados da empresa com CNPJ (opcionais)
+  cnpj: z.string().length(14).optional().nullable(),
+  nomeFantasia: z.string().optional().nullable(),
+  razaoSocial: z.string().optional().nullable(),
+  registroMunicipal: z.string().optional().nullable(),
+  registroEstadual: z.string().optional().nullable(),
+  empresaCep: z.string().optional().nullable(),
+  empresaEstado: z.string().optional().nullable(),
+  empresaCidade: z.string().optional().nullable(),
+  empresaRua: z.string().optional().nullable(),
+  empresaNumero: z.string().optional().nullable(),
+  empresaBairro: z.string().optional().nullable(),
+  empresaComplemento: z.string().optional().nullable(),
 
   // Campo obrigatório sempre
   cargoNaEmpresa: z.string(),
 
   // Empresa sem CNPJ
-  nomeEmpresa: z.string().optional()
+  nomeEmpresa: z.string().optional().nullable()
 }).strict();
