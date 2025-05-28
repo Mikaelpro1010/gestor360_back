@@ -1,23 +1,34 @@
-import { Request, Response, NextFunction, RequestHandler } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { AuthUserService } from '../../service/users/AuthUserService';
 
 class AuthUserController {
-  handle: RequestHandler = async (req, res, next) => {
+  async handle(req: Request, res: Response, next: NextFunction) {
     try {
-      const { email, password, status } = req.body;
+      const { email, password } = req.body;
       const authUserService = new AuthUserService();
-
-      if(status && status !== 'ATIVA') {
-        return res.status(403).json({ error: 'Usuário com cadastro pendente.' });
-      }
 
       const auth = await authUserService.execute({ email, password });
 
-      return res.json(auth) as any; // Usando 'as any' para evitar o erro de tipo
+      return res.json({
+        success: true,
+        ...auth
+      });
+
     } catch (error) {
-      next(error);
+      if (error instanceof Error) {
+        return res.status(401).json({
+          success: false,
+          message: error.message,
+        });
+      }
+
+      return res.status(500).json({
+        success: false,
+        message: 'Unexpected error',
+      });
     }
-  };
+  }
 }
+
 
 export { AuthUserController };
