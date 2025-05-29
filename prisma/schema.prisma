@@ -14,54 +14,90 @@ datasource db {
 }
 
 model User {
-  id             String               @id @default(uuid())
-  name           String
-  email          String    @unique
-  password       String
-  verificationCode   String?
-  codeExpiresAt      DateTime?
+  id               String    @id @default(uuid())
+  name             String
+  email            String    @unique
+  password         String
+  verificationCode String?
+  codeExpiresAt    DateTime?
 
-  status    String  @default("PENDENTE")
+  status     String  @default("PENDENTE")
+  contaAtiva Boolean @default(true)
 
   // Hierarquia
-  role           String   @default("user") // ex: "admin", "user", "viewer"
-  roleLevel      Int      @default(6)
-  managerId      String?
-  manager        User?     @relation("UserToManager", fields: [managerId], references: [id])
-  subordinates   User[]    @relation("UserToManager")
+  role         String  @default("user") // ex: "admin", "user", "viewer"
+  roleLevel    Int     @default(6)
+  managerId    String?
+  manager      User?   @relation("UserToManager", fields: [managerId], references: [id])
+  subordinates User[]  @relation("UserToManager")
 
   // Dados Pessoais (TODOS OPCIONAIS)
-  cpf            String?   @unique
-  cep            String?
-  estado         String?
-  cidade         String?
-  rua            String?
-  numero         String?
-  bairro         String?
-  complemento    String?
+  cpf         String? @unique
+  cep         String?
+  estado      String?
+  cidade      String?
+  rua         String?
+  numero      String?
+  bairro      String?
+  complemento String?
 
   // Dados da Empresa (caso tenha CNPJ)
-  cnpj                   String?   @unique
-  nomeFantasia           String?
-  razaoSocial            String?
-  registroMunicipal      String?
-  registroEstadual       String?
-  empresaCep             String?
-  empresaEstado          String?
-  empresaCidade          String?
-  empresaRua             String?
-  empresaNumero          String?
-  empresaBairro          String?
-  empresaComplemento     String?
+  cnpj               String? @unique
+  nomeFantasia       String?
+  razaoSocial        String?
+  registroMunicipal  String?
+  registroEstadual   String?
+  empresaCep         String?
+  empresaEstado      String?
+  empresaCidade      String?
+  empresaRua         String?
+  empresaNumero      String?
+  empresaBairro      String?
+  empresaComplemento String?
 
   // Campo obrigatório sempre
-  cargoNaEmpresa         String
+  cargoNaEmpresa String
 
   // Caso não tenha CNPJ
-  nomeEmpresa            String?
+  nomeEmpresa String?
 
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
+  clients Client[] // um usuário pode ter vários clientes
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("user")
+}
+
+model Client {
+  id     String @id @default(uuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  // Informações Gerais
+  email          String    @unique
+  contato        String
+  cpf            String    @unique
+  rg             String?
+  sexo           String?
+  dataNascimento DateTime?
+
+  // Endereço
+  endereco String?
+  numero   String?
+  bairro   String?
+  cep      String?
+  cidade   String?
+  estado   String?
+
+  situacao String
+  origem  String
+
+  documentos String[] // JSON com os documentos do cliente, ex: RG, CPF, CNH, etc.
+
+  //Anotações do cliente
+  anotacoes String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
